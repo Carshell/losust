@@ -34,11 +34,12 @@ class PlaywrightUser(User):
 
     async def _run_playwright_task(self):
         async with async_playwright() as p:
-            browser = await p.chromium.launch(headless=False)
+            browser = await p.chromium.launch(headless=True)
             page = await browser.new_page()
             
             start_time = time.perf_counter()
             user = generate_random_user()
+
             try:
                 await page.goto("https://akcenter.com.ua/")
                 await page.get_by_text("кабінет").click()
@@ -76,7 +77,7 @@ class PlaywrightUser(User):
                     exception=e,
                 )
             finally:
-                #await browser.close()
+                await browser.close()
                 pass
 
     @task
